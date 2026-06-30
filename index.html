@@ -2,81 +2,80 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Astero1ds</title>
     <style>
         body {
-    background-color: #111;
-    margin: 0;
-    padding: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    box-sizing: border-box;
-    /* Quitamos flex-direction: column y overflow: hidden de aquí */
-}
+            background-color: #111;
+            margin: 0;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            box-sizing: border-box;
+            font-family: 'Courier New', Courier, monospace;
+        }
 
-/* Agrega esta regla nueva para envolver el juego y los botones */
-.contenedor-juego {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-}
+        /* Contenedor principal que alinea el juego arriba y botones abajo */
+        .contenedor-juego {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+            max-width: 800px;
+        }
 
         canvas {
             border: 2px solid white;
             background-color: black;
+            max-width: 100%;
+            height: auto;
+            box-shadow: 0px 0px 20px rgba(255, 255, 255, 0.1);/* Caja de los botones */
+        #controles-touch {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 25px;
+            width: 100%;
         }
-        body {
-    background-color: #111;
-    display: flex;
-    flex-direction: column; /* Esto hace que los botones vayan ABAJO del juego y no a los lados */
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
-    margin: 0;
-    overflow: hidden; /* Evita barras de desplazamiento raras */
-}
 
-canvas {
-    border: 2px solid white;
-    background-color: black;
-}
+        /* Estilo retro para los botones */
+        #controles-touch button {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+            padding: 15px 25px;
+            font-size: 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            user-select: none;
+            touch-action: manipulation;
+            transition: background 0.1s ease;
+        }
 
-#controles-touch {
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-    margin-top: 20px;
-}
+        /* Efecto visual al mantenerlos presionados */
+        #controles-touch button:active {
+            background-color: rgba(255, 255, 255, 0.2);
+        }
 
-#controles-touch button {
-    background: transparent;
-    color: white;
-    border: 2px solid white;
-    padding: 15px 25px;
-    font-size: 24px;
-    border-radius: 8px;
-    user-select: none;
-    touch-action: manipulation;
-}
+        /* El botón de disparo con un toque rojo */
+        #btn-disparo {
+            background-color: rgba(255, 0, 0, 0.1) !important;
+            border-color: #ff4444 !important;}
 
-#btn-disparo {
-    background-color: rgba(255, 0, 0, 0.2) !important;
-}
+        #btn-disparo:active {
+            background-color: rgba(255, 0, 0, 0.4) !important;
+        }
     </style>
-    
 </head>
-<body>
-    <canvas id="canvasJuego" width="800" height="600"></canvas>
-    <script src="juego.js"></script>
-</body>
-</html>
 <body>
 
     <div class="contenedor-juego">
+        <!-- UN SOLO CANVAS -->
         <canvas id="canvasJuego" width="800" height="600"></canvas>
 
+        <!-- Bloque de botones virtuales -->
         <div id="controles-touch">
             <button id="btn-izq">◀</button>
             <button id="btn-arriba">▲</button>
@@ -85,5 +84,7 @@ canvas {
         </div>
     </div>
 
+    <!-- Tu archivo de lógica principal -->
     <script src="juego.js"></script>
 </body>
+</html>
