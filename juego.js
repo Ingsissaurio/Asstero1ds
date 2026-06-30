@@ -53,6 +53,27 @@ window.addEventListener("keyup", (evento) => {
     if (evento.key in teclas) {
         teclas[evento.key] = false;}
 });
+// --- CONFIGURACIÓN DE CONTROLES TÁCTILES REFORZADA ---
+const btnIzq = document.getElementById("btn-izq");
+const btnArriba = document.getElementById("btn-arriba");
+const btnDer = document.getElementById("btn-der");
+const btnDisparo = document.getElementById("btn-disparo");
+
+// Función para asignar eventos dobles (Celular y Mouse)
+function activarBoton(boton, teclaPropiedad) {
+    // Para celular
+    boton.addEventListener("touchstart", (e) => { e.preventDefault(); teclas[teclaPropiedad] = true; });
+    boton.addEventListener("touchend", (e) => { e.preventDefault(); teclas[teclaPropiedad] = false; });
+    // Por si acaso estás probando en modo responsivo en compu o navegadores raros
+    boton.addEventListener("mousedown", (e) => { teclas[teclaPropiedad] = true; });
+    boton.addEventListener("mouseup", (e) => { teclas[teclaPropiedad] = false; });
+}
+
+// Los vinculamos a las variables que ya lee tu física
+activarBoton(btnIzq, "ArrowLeft");
+activarBoton(btnDer, "ArrowRight");
+activarBoton(btnArriba, "ArrowUp");
+activarBoton(btnDisparo, " ");
 
 // Bucle principal del juego (Se ejecuta 60 veces por segundo)
 function actualizarJuego() {
