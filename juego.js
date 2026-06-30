@@ -120,7 +120,7 @@ function actualizarJuego() {
         //Lamamos a la uncion que pinta el titulo y el boton de play
         dibujarPantallaInicio();
 
-    } else if(estadoJuego === "JUGANDO") {    
+    } else if(estadoJuego === "JUGANDO") 
 
     // B. ACTUALIZAR LÓGICA DE MOVIMIENTO Y ROTACIÓN
     if (teclas.ArrowLeft) {
