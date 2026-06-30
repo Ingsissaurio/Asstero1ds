@@ -10,7 +10,7 @@ const teclas = {
 };
 
 //Menu de inicio
-let estado de juego = "MENU";
+let estadoJuego = "MENU";
 const botonPlay = {
     x: 325,
     y: 350,
