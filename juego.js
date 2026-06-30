@@ -9,6 +9,15 @@ const teclas = {
     " ": false // barra espaciadora
 };
 
+//Menu de inicio
+let estado de juego = "MENU";
+const botonPlay = {
+    x: 325,
+    y: 350,
+    ancho: 150,
+    alto: 50,
+};
+
 // 2. CONFIGURACIÓN DE LA NAVE CON FÍSICA ESPACIAL
 let nave = {
     x: canvas.width / 2,
@@ -24,6 +33,32 @@ let laseres = [];
 let asteroides = [];
 let score = 0;
 let vidas = 3;
+
+function dibujarPantallaInicio() {
+    // Pintamos el fondo negro del menú
+    ctx.fillStyle = "black";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    // Título principal: BLAST-RAID
+    ctx.fillStyle = "#00ffcc"; // Cian neón
+    ctx.font = "bold 45px 'Courier New', Courier, monospace";
+    ctx.textAlign = "center";
+    ctx.fillText("BLAST-RAID", canvas.width / 2, 220);
+
+    // Subtítulo
+    ctx.fillStyle = "white";
+    ctx.font = "16px 'Courier New', Courier, monospace";
+    ctx.fillText("DESTROZA LAS ROCAS Y ALIENÍGENAS", canvas.width / 2, 280);
+
+    // Dibujar el botón amarillo de PLAY
+    ctx.fillStyle = "#ffcc00"; 
+    ctx.fillRect(botonPlay.x, botonPlay.y, botonPlay.ancho, botonPlay.alto);
+
+    // Texto del botón
+    ctx.fillStyle = "black";
+    ctx.font = "bold 22px 'Courier New', Courier, monospace";
+    ctx.fillText("PLAY", canvas.width / 2, botonPlay.y + 33);
+}
 
 // Función para crear un asteroide aleatorio
 function crearAsteroide() {
@@ -79,6 +114,13 @@ activarBoton(btnDisparo, " ");
 function actualizarJuego() {
     // A. Limpiar la pantalla
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    //Evaluamos en que pantalla estamos
+    if (estadoJuego === "MENU") {
+        //Lamamos a la uncion que pinta el titulo y el boton de play
+        dibujarPantallaInicio();
+
+    } else if(estadoJuego === "JUGANDO") {    
 
     // B. ACTUALIZAR LÓGICA DE MOVIMIENTO Y ROTACIÓN
     if (teclas.ArrowLeft) {
