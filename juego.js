@@ -18,6 +18,22 @@ const botonPlay = {
     alto: 50,
 };
 
+function iniciarPartida() {
+    // 1. Mandamos la nave al centro de la pantalla
+    nave.x = canvas.width / 2;
+    nave.y = canvas.height / 2;
+    nave.vx = 0;
+    nave.vy = 0;
+    nave.angulo = 0;
+
+    // 2. Vaciamos los arreglos para que no haya cosas de la partida anterior
+    laseres = [];
+    // asteroides = []; // Si tienes un arreglo de asteroides, vacíalo aquí también
+    
+    // 3. Cambiamos el estado para que el bucle principal dibuje el juego
+    estadoJuego = "JUGANDO";
+}
+
 // 2. CONFIGURACIÓN DE LA NAVE CON FÍSICA ESPACIAL
 let nave = {
     x: canvas.width / 2,
@@ -302,5 +318,38 @@ function actualizarJuego() {
    requestAnimationFrame(actualizarJuego);
 }
 
+// Función para verificar si la coordenada del clic está dentro del botón amarillo
+function verificarClicBoton(clickX, clickY) {
+    if (clickX >= botonPlay.x && clickX <= botonPlay.x + botonPlay.ancho &&
+        clickY >= botonPlay.y && clickY <= botonPlay.y + botonPlay.alto) {
+        
+        // Si le atinó al botón, iniciamos la partida
+        iniciarPartida();
+    }
+}
+
+// ─── EVENTO PARA MOUSE (PC) ──────────────────────────────────────────
+canvas.addEventListener("click", function(evento) {
+    // Solo nos importa el clic si el juego está detenido en el menú
+    if (estadoJuego === "MENU") {
+        const rect = canvas.getBoundingClientRect();
+        // Calculamos la posición exacta del mouse dentro del canvas
+        const mouseX = evento.clientX - rect.left;
+        const mouseY = evento.clientY - rect.top;
+        
+        verificarClicBoton(mouseX, mouseY);
+    }
+});
+// ─── EVENTO PARA PANTALLA TÁCTIL (CELULAR) ───────────────────────────
+canvas.addEventListener("touchstart", function(evento) {
+    if (estadoJuego === "MENU") {
+        const rect = canvas.getBoundingClientRect();
+        // Tomamos el primer dedo que toque la pantalla
+        const touchX = evento.touches[0].clientX - rect.left;
+        const touchY = evento.touches[0].clientY - rect.top;
+        
+        verificarClicBoton(touchX, touchY);
+    }
+});
 // Arrancar el motor del juego por primera vez
 requestAnimationFrame(actualizarJuego);
