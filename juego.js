@@ -327,29 +327,30 @@ function verificarClicBoton(clickX, clickY) {
         iniciarPartida();
     }
 }
-
 // ─── EVENTO PARA MOUSE (PC) ──────────────────────────────────────────
 canvas.addEventListener("click", function(evento) {
-    // Solo nos importa el clic si el juego está detenido en el menú
     if (estadoJuego === "MENU") {
         const rect = canvas.getBoundingClientRect();
-        // Calculamos la posición exacta del mouse dentro del canvas
-        const mouseX = evento.clientX - rect.left;
-        const mouseY = evento.clientY - rect.top;
+        
+        // FÓRMULA MÁGICA DE ESCALADO:
+        // Convierte el clic físico a la coordenada interna de tu canvas (800x600)
+        const mouseX = (evento.clientX - rect.left) * (canvas.width / rect.width);
+        const mouseY = (evento.clientY - rect.top) * (canvas.height / rect.height);
         
         verificarClicBoton(mouseX, mouseY);
     }
 });
+
 // ─── EVENTO PARA PANTALLA TÁCTIL (CELULAR) ───────────────────────────
 canvas.addEventListener("touchstart", function(evento) {
     if (estadoJuego === "MENU") {
         const rect = canvas.getBoundingClientRect();
-        // Tomamos el primer dedo que toque la pantalla
-        const touchX = evento.touches[0].clientX - rect.left;
-        const touchY = evento.touches[0].clientY - rect.top;
+// FÓRMULA MÁGICA DE ESCALADO PARA TOUCH:
+        const touchX = (evento.touches[0].clientX - rect.left) * (canvas.width / rect.width);
+        const touchY = (evento.touches[0].clientY - rect.top) * (canvas.height / rect.height);
         
         verificarClicBoton(touchX, touchY);
     }
-});
+});        
 // Arrancar el motor del juego por primera vez
 requestAnimationFrame(actualizarJuego);
