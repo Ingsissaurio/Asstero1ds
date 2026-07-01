@@ -193,7 +193,7 @@ function actualizarJuego() {
                 score += 10; 
 
                 // 2. Si el asteroide era grande, lo dividimos en 2 más chicos
-                if (ast.radio > 15) {
+                if (ast.radio > 20) {
                     for (let k = 0; k < 2; k++) {
                         asteroides.push({x: ast.x,
                             y: ast.y,
