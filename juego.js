@@ -1,3 +1,4 @@
+// juego dedicado a mi piojito
 const canvas = document.getElementById("canvasJuego");
 const ctx = canvas.getContext("2d");
 
