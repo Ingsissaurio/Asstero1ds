@@ -35,6 +35,10 @@ function iniciarPartida() {
     estadoJuego = "JUGANDO";
 }
 
+// Enemigos espaciales
+let enemigosNormales = []; // 
+let ufos = [];             // 
+
 // 2. CONFIGURACIÓN DE LA NAVE CON FÍSICA ESPACIAL
 let nave = {
     x: canvas.width / 2,
@@ -75,6 +79,40 @@ function dibujarPantallaInicio() {
     ctx.fillStyle = "black";
     ctx.font = "bold 22px 'Courier New', Courier, monospace";
     ctx.fillText("PLAY", canvas.width / 2, botonPlay.y + 33);
+}
+
+// Función para crear una cuadrícula de naves normales (cuadrados)
+function spawnearInvasores() {
+    const filas = 3;
+    const columnas = 8;
+    const tamaño = 30; // Cuadrados de 30x30 píxeles
+    
+    for (let f = 0; f < filas; f++) {
+        for (let c = 0; c < columnas; c++) {
+            enemigosNormales.push({
+                x: 100 + c * 60,  // Espaciados entre sí
+                y: 50 + f * 50,   // Empezando desde arriba
+                ancho: tamaño,
+                alto: tamaño,
+                velocidadX: 1.5,
+                puntos: 10,
+                monedas: 1 // Tu idea de la economía
+            });
+        }
+    }
+}
+
+// Función para crear un UFO de vez en cuando (rectángulo)
+function spawnearUFO() {
+    ufos.push({
+        x: -60, // Aparece fuera de la pantalla por la izquierda
+        y: 80,  // Altura fija arriba
+        ancho: 50, // Rectángulo
+        alto: 25,
+        velocidadX: 3, // Más rápido que los normales
+        puntos: 50,
+        monedas: 5 // Da más recompensa
+    });
 }
 
 // Función para crear un asteroide aleatorio
@@ -251,6 +289,32 @@ function actualizarJuego() {
     } else if (nave.y < 0) {
         nave.y = canvas.height;
     }
+
+    // ─── LOGICA DE ENEMIGOS NORMALES (CUADRADOS) ───────────────────
+enemigosNormales.forEach(enemigo => {
+    // Mover de izquierda a derecha (puedes luego hacer que bajen al tocar el borde)
+    enemigo.x += enemigo.velocidadX;
+    
+    // Dibujarlos en el canvas (Estilo neón/fósforo)
+    ctx.strokeStyle = "#00ffcc"; // Cian neón
+    ctx.lineWidth = 2;
+    ctx.strokeRect(enemigo.x, enemigo.y, enemigo.ancho, enemigo.alto);
+});
+
+// ─── LOGICA DE UFOS (RECTÁNGULOS) ─────────────────────────────
+ufos.forEach((ufo, indice) => {
+    ufo.x += ufo.velocidadX;
+    
+    // Dibujarlo como rectángulo
+    ctx.strokeStyle = "#ff00ff"; // Rosa/Morado neón para variar
+    ctx.lineWidth = 2;
+    ctx.strokeRect(ufo.x, ufo.y, ufo.ancho, ufo.alto);
+    
+    // Si sale de la pantalla, lo borramos para no alentar el juego
+    if (ufo.x > canvas.width) {
+        ufos.splice(indice, 1);
+    }
+});
     // --- LÓGICA DE DISPAROS ---
     
     // Si presiona espacio y puede disparar, creamos un láser
