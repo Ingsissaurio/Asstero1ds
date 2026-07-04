@@ -109,23 +109,6 @@ function colision(bala, enemigo) {
            bala.y + bala.alto > enemigo.y;
 }
 
-// Dentro de tu bucle principal, donde mueves tus láseres:
-laseres.forEach((bala, indiceBala) => {
-    // Revisar contra cuadrados (enemigos)
-    enemigosNormales.forEach((enemigo, indiceEnemigo) => {
-        if (colision(bala, enemigo)) {
-            // Impacto detectado
-            monedas += enemigo.monedas; // Sumamos la recompensa
-            score += enemigo.puntos;
-            
-            // Eliminamos la bala y el enemigo del arreglo
-            laseres.splice(indiceBala, 1);
-            enemigosNormales.splice(indiceEnemigo, 1);
-        }
-    });
-});
-
-
 // Función para crear un UFO de vez en cuando (rectángulo)
 function spawnearUFO() {
     ufos.push({
@@ -237,6 +220,18 @@ function actualizarJuego() {
     });
     // --- DETECCIÓN DE COLISIONES (LÁSER VS ASTEROIDE) ---
     // Usamos bucles invertidos (de atrás para adelante) para poder borrar objetos sin romper el conteo
+   // Dentro de donde manejas tus láseres:
+laseres.forEach((bala, indiceBala) => {
+    enemigosNormales.forEach((enemigo, indiceEnemigo) => {
+        if (colision(bala, enemigo)) {
+            score += 10; // Solo sumamos puntos al marcador
+            
+            // Desaparecen la bala y el cuadrado
+            laseres.splice(indiceBala, 1);
+            enemigosNormales.splice(indiceEnemigo, 1);
+        }
+    });
+});
     for (let i = laseres.length - 1; i >= 0; i--) {
         for (let j = asteroides.length - 1; j >= 0; j--) {
             let l = laseres[i];
@@ -271,6 +266,59 @@ function actualizarJuego() {
             }
         }
     }
+    // Variable global para controlar la dirección del bloque (1 = derecha, -1 = izquierda)
+let direccionBloque = 1; 
+let velocidadBloque = 1.5;
+let bajarBloque = false;
+
+// ─── LÓGICA DE MOVIMIENTO TIPO SPACE INVADERS ───────────────────
+if (estadoJuego === "JUGANDO") {
+
+    // PASO 1: Revisar si algún cuadrado va a tocar los bordes del canvas
+    enemigosNormales.forEach(enemigo => {
+        // Si va a la derecha y toca el borde derecho, o va a la izquierda y toca el izquierdo
+        if ((direccionBloque === 1 && enemigo.x + enemigo.ancho >= canvas.width) || 
+            (direccionBloque === -1 && enemigo.x <= 0)) {
+            bajarBloque = true; // Activamos la alerta para que todo el bloque baje
+        }
+    });
+
+    // PASO 2: Si alguien tocó el borde, cambiamos la dirección y decidimos bajar
+    if (bajarBloque) {
+        direccionBloque *= -1; // Invierte la dirección (de 1 pasa a -1, o de -1 a 1)
+        bajarBloque = false;   // Apagamos la alerta// Hacemos que TODO el bloque baje 20 píxeles de un jalón
+        enemigosNormales.forEach(enemigo => {
+            enemigo.y += 20; 
+        });
+    } else {
+        // Si nadie ha tocado el borde, simplemente se siguen moviendo de lado
+        enemigosNormales.forEach(enemigo => {
+            enemigo.x += velocidadBloque * direccionBloque;
+        });
+    }
+
+    // PASO 3: Dibujar los cuadrados en el canvas
+    enemigosNormales.forEach(enemigo => {
+        ctx.strokeStyle = "#00ffcc"; // Cian neón
+        ctx.lineWidth = 2;
+        ctx.strokeRect(enemigo.x, enemigo.y, enemigo.ancho, enemigo.alto);
+    });
+}
+    // Dentro de tu bucle principal, donde mueves tus láseres:
+laseres.forEach((bala, indiceBala) => {
+    // Revisar contra cuadrados (enemigos)
+    enemigosNormales.forEach((enemigo, indiceEnemigo) => {
+        if (colision(bala, enemigo)) {
+            // Impacto detectado
+            monedas += enemigo.monedas; // Sumamos la recompensa
+            score += enemigo.puntos;
+            
+            // Eliminamos la bala y el enemigo del arreglo
+            laseres.splice(indiceBala, 1);
+            enemigosNormales.splice(indiceEnemigo, 1);
+        }
+    });
+});
 
     // --- DETECCIÓN DE COLISIONES (ASTEROIDE VS NAVE) ---
     asteroides.forEach((ast) => {
