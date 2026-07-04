@@ -401,7 +401,6 @@ canvas.addEventListener("click", function(evento) {
         // Convierte el clic físico a la coordenada interna de tu canvas (800x600)
         const mouseX = (evento.clientX - rect.left) * (canvas.width / rect.width);
         const mouseY = (evento.clientY - rect.top) * (canvas.height / rect.height);
-        
         verificarClicBoton(mouseX, mouseY);
     }
 });
