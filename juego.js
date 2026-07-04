@@ -20,18 +20,17 @@ const botonPlay = {
 };
 
 function iniciarPartida() {
-    // 1. Mandamos la nave al centro de la pantalla
     nave.x = canvas.width / 2;
     nave.y = canvas.height / 2;
     nave.vx = 0;
     nave.vy = 0;
     nave.angulo = 0;
-
-    // 2. Vaciamos los arreglos para que no haya cosas de la partida anterior
     laseres = [];
-    // asteroides = []; // Si tienes un arreglo de asteroides, vacíalo aquí también
     
-    // 3. Cambiamos el estado para que el bucle principal dibuje el juego
+    // Vaciamos por si acaso y creamos los cuadrados aquí:
+    enemigosNormales = []; 
+    spawnearInvasores(); // <─── ¡Asegúrate de tener esta línea aquí!
+    
     estadoJuego = "JUGANDO";
 }
 
@@ -304,6 +303,7 @@ if (estadoJuego === "JUGANDO") {
         ctx.strokeRect(enemigo.x, enemigo.y, enemigo.ancho, enemigo.alto);
     });
 }
+    console.log("Cantidad de enemigos:", enemigosNormales.length);
     // Dentro de tu bucle principal, donde mueves tus láseres:
 laseres.forEach((bala, indiceBala) => {
     // Revisar contra cuadrados (enemigos)
