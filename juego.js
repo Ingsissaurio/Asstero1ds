@@ -102,6 +102,30 @@ function spawnearInvasores() {
     }
 }
 
+function colision(bala, enemigo) {
+    return bala.x < enemigo.x + enemigo.ancho &&
+           bala.x + bala.ancho > enemigo.x &&
+           bala.y < enemigo.y + enemigo.alto &&
+           bala.y + bala.alto > enemigo.y;
+}
+
+// Dentro de tu bucle principal, donde mueves tus láseres:
+laseres.forEach((bala, indiceBala) => {
+    // Revisar contra cuadrados (enemigos)
+    enemigosNormales.forEach((enemigo, indiceEnemigo) => {
+        if (colision(bala, enemigo)) {
+            // Impacto detectado
+            monedas += enemigo.monedas; // Sumamos la recompensa
+            score += enemigo.puntos;
+            
+            // Eliminamos la bala y el enemigo del arreglo
+            laseres.splice(indiceBala, 1);
+            enemigosNormales.splice(indiceEnemigo, 1);
+        }
+    });
+});
+
+
 // Función para crear un UFO de vez en cuando (rectángulo)
 function spawnearUFO() {
     ufos.push({
